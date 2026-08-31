@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="login and register.css">
+</head>
+<body>
+    <div class="container">
+        <!-- REGISTER -->
+        <div class="Register-box" id="registerBox">
+            <h1>Đăng ký</h1>
+            <p class="subtitle">Tạo tài khoản mới của bạn</p>
+
+            <form id="registerForm">
+
+                <div class="input-group">
+                    <label>Tên</label>
+                    <input
+                        type="text"
+                        id="registerName"
+                        placeholder="Nhập tên của bạn"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        id="registerEmail"
+                        placeholder="Nhập email của bạn"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label>Mật khẩu</label>
+                    <input
+                        type="password"
+                        id="registerPassword"
+                        placeholder="Tạo mật khẩu"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label>Nhập lại mật khẩu</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Nhập lại mật khẩu"
+                        required
+                    >
+                </div>
+
+                <button type="submit">Đăng ký</button>
+                
+                <p class="message" id="registerMessage"></p>
+
+            </form>
+
+            <p class="switch">
+                Đã có tài khoản?
+                <span onclick="window.location.href='login.html'">Đăng nhập ngay</span>
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
