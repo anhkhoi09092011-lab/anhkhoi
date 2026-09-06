@@ -116,6 +116,27 @@ img {
 .cart {
     font-size: 21px;
 }
+.cart {
+    position: relative;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+#cart-count {
+    position: absolute;
+    top: -10px;
+    right: -12px;
+    min-width: 18px;
+    height: 18px;
+    padding: 2px 5px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .login {
     background: #f7f3f3;

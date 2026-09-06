@@ -1,15 +1,5 @@
 /* =========================================================
    AKA Shop – Giỏ hàng (Add to cart)
-   Cách dùng: thêm dòng này vào cuối file index.html,
-   ngay trước thẻ đóng </body>:
-
-   <script src="cart.js"></script>
-
-   Script này TỰ ĐỘNG:
-   - Gắn sự kiện cho mọi nút có chữ "Thêm vào giỏ"
-   - Lấy tên sản phẩm, giá, ảnh từ card sản phẩm gần nhất
-   - Lưu giỏ hàng vào localStorage (không mất khi tải lại trang)
-   - Vẽ khung giỏ hàng (cart drawer) khi bấm vào icon 🛒
    ========================================================= */
 
 (function () {
@@ -25,14 +15,12 @@
     }
   }
   function saveCart(cart) {
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));
-    renderCart();
-    updateBadge();
-  }
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  updateBadge();
+}
 
   /* ---------- 2. Tìm thông tin sản phẩm từ 1 nút "Thêm vào giỏ" ---------- */
   function getProductFromButton(btn) {
-    // Đi lên tối đa 6 cấp cha để tìm khối chứa toàn bộ card sản phẩm
     let card = btn;
     for (let i = 0; i < 6 && card.parentElement; i++) {
       card = card.parentElement;
@@ -52,30 +40,59 @@
   }
 
   /* ---------- 3. Thêm sản phẩm vào giỏ ---------- */
-  function addToCart(product) {
-    const cart = getCart();
-    const existing = cart.find((p) => p.id === product.id);
-    if (existing) {
-      existing.qty += 1;
-    } else {
-      cart.push({ ...product, qty: 1 });
-    }
-    saveCart(cart);
-    openCart();
+    function addToCart(product) {
+
+    // Kiểm tra tài khoản đăng nhập
+  const currentUser = JSON.parse(
+    localStorage.getItem("aka_current_user")
+  );
+
+  // Chưa đăng nhập
+  if (!currentUser) {
+    alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
+
+    localStorage.setItem(
+      "redirectAfterLogin",
+      window.location.href
+    );
+
+    window.location.href = "login.html";
+    return;
   }
+
+  // Đã đăng nhập → thêm sản phẩm
+  const cart = getCart();
+
+  const existing = cart.find((p) => p.id === product.id);
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+
+  saveCart(cart);
+  renderCart(); // Cập nhật sản phẩm vào giỏ hàng
+  openCart();
+}
 
   function changeQty(id, delta) {
-    let cart = getCart();
-    cart = cart
-      .map((p) => (p.id === id ? { ...p, qty: p.qty + delta } : p))
-      .filter((p) => p.qty > 0);
-    saveCart(cart);
-  }
+  let cart = getCart();
 
-  function removeItem(id) {
-    saveCart(getCart().filter((p) => p.id !== id));
-  }
+  cart = cart
+    .map((p) => (p.id === id ? { ...p, qty: p.qty + delta } : p))
+    .filter((p) => p.qty > 0);
 
+  saveCart(cart);
+  renderCart(); // Cập nhật lại giỏ hàng
+}
+
+function removeItem(id) {
+  const cart = getCart().filter((p) => p.id !== id);
+
+  saveCart(cart);
+  renderCart(); // Xóa sản phẩm khỏi giao diện ngay
+}
   /* ---------- 4. Tính tổng tiền ---------- */
   function parsePrice(str) {
     return parseInt(str.replace(/[^\d]/g, ""), 10) || 0;
@@ -205,23 +222,24 @@
 
   /* ---------- 7. Badge số lượng trên icon giỏ hàng ---------- */
   function findCartIcon() {
-    return Array.from(document.querySelectorAll("a, button, span")).find(
-      (el) => el.textContent.trim() === "🛒"
-    );
+  return document.querySelector("a.cart");
+}
+    function updateBadge() {
+  const icon = findCartIcon();
+  if (!icon) return;
+
+  let badge = icon.querySelector("#aka-cart-badge");
+  const count = getCart().reduce((s, p) => s + p.qty, 0);
+
+  if (!badge) {
+    badge = document.createElement("span");
+    badge.id = "aka-cart-badge";
+    icon.appendChild(badge);
   }
-  function updateBadge() {
-    const icon = findCartIcon();
-    if (!icon) return;
-    let badge = icon.querySelector("#aka-cart-badge");
-    const count = getCart().reduce((s, p) => s + p.qty, 0);
-    if (!badge) {
-      badge = document.createElement("span");
-      badge.id = "aka-cart-badge";
-      icon.appendChild(badge);
-    }
-    badge.textContent = count;
-    badge.style.display = count > 0 ? "inline-block" : "none";
-  }
+
+  badge.textContent = count;
+  badge.style.display = count > 0 ? "inline-block" : "none";
+}
 
   /* ---------- 8. Thông báo nhỏ khi thêm vào giỏ ---------- */
   let toastTimer;
