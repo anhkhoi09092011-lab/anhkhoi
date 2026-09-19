@@ -78,8 +78,29 @@ img {
     color:white;
 }
 
-.navbar a:hover {
-    color: #0b5cff;
+.navbar a {
+    font-size: 20px;
+    font-weight: 600;
+    transition: 0.3s;
+    color: white;
+    position: relative; /* BẮT BUỘC: Để gạch chân căn chỉnh chuẩn theo chữ */
+    padding-bottom: 5px; /* Tạo khoảng khoảng trống nhẹ dưới chữ */
+}
+
+.navbar a:hover,
+.navbar a.active {
+    color: #ff1e35;
+}
+
+.navbar a.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px; /* Đặt vạch nằm ngay phía dưới chữ */
+    width: 100%;
+    height: 3px;
+    background: #ff1e35;
+    border-radius: 5px;
 }
 
 .header-right {
@@ -149,7 +170,7 @@ img {
 }
 
 .login:hover {
-    background: #0b5cff;
+    background: #2e01f7;
 }
 
 
