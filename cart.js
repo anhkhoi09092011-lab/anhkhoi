@@ -8,12 +8,18 @@
 
   /* ---------- 1. Lấy / lưu dữ liệu giỏ hàng ---------- */
   function getCart() {
-    try {
-      return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-    } catch {
-      return [];
-    }
+  // Kiểm tra nếu chưa đăng nhập thì trả về giỏ hàng rỗng
+  const currentUser = JSON.parse(localStorage.getItem("aka_current_user"));
+  if (!currentUser) {
+    return [];
   }
+
+  try {
+    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
   function saveCart(cart) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   updateBadge();
