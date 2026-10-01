@@ -694,101 +694,106 @@ img {
 ========================= */
 
 @media (max-width: 768px) {
-
+ 
+    html {
+        scroll-padding-top: 110px; /* tránh header dính che mất tiêu đề khi cuộn tới mục */
+    }
+ 
+    /* ----- Header: hàng 1 = logo + giỏ hàng/đăng nhập, hàng 2 = menu ----- */
     .header {
         height: auto;
-        padding: 20px;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .navbar {
-        width: 100%;
+        padding: 8px 14px 0;
         flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 6px 10px;
     }
-
+ 
+    .logo {
+        order: 1;
+    }
+ 
+    .logo img {
+        width: 90px;
+        height: 55px;
+    }
+ 
     .header-right {
+        order: 2;
+        display: flex;          /* trước đây bị display:none nên mất giỏ hàng + đăng nhập */
+        gap: 10px;
+        min-width: 0;
+    }
+ 
+    .search {
+        height: 34px;
+    }
+ 
+    .search input {
+        width: 90px;
+        padding: 0 8px;
+        font-size: 13px;
+    }
+ 
+    .search button {
+        width: 32px;
+    }
+ 
+    .cart {
+        font-size: 22px;
+    }
+ 
+    .login {
+        padding: 8px 10px;
+        font-size: 12px;
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+ 
+    #user-greeting strong {
+        font-size: 13px;
+    }
+ 
+    .navbar {
+        order: 3;
+        width: 100%;
+        gap: 18px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 6px 0 10px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+ 
+    .navbar::-webkit-scrollbar {
         display: none;
     }
-
-    .hero {
-        height: 550px;
-        padding: 30px;
-        background-position: center;
-    }
-
-    .hero h1 {
-        font-size: 45px;
-    }
-
-    .hero-content > p:not(.small-title) {
+ 
+    .navbar a {
         font-size: 15px;
+        flex-shrink: 0;
     }
-
-    .category,
-    .products {
-        padding: 60px 20px;
+ 
+    .navbar a.active::after {
+        bottom: -4px;
     }
-
+ 
+    /* ----- Hero ----- */
+    .hero {
+        height: 240px;
+    }
+ 
+    /* ----- Tiêu đề section ----- */
+    .section-title {
+        margin-bottom: 30px;
+    }
+ 
     .section-title h2 {
-        font-size: 30px;
+        font-size: 26px;
     }
-
-    .category-container {
-        grid-template-columns: 1fr;
-    }
-
-    .category-card {
-        height: 350px;
-    }
-
-    .product-container {
-        grid-template-columns: 1fr;
-    }
-
-    .product-image {
-        height: 350px;
-    }
-
-    .banner {
-        height: 400px;
-        padding: 20px;
-    }
-
-    .banner-content h2 {
-        font-size: 35px;
-    }
-
-    .about {
-        grid-template-columns: 1fr;
-    }
-
-    .about-image {
-        height: 400px;
-    }
-
-    .about-content {
-        padding: 50px 25px;
-    }
-
-    .about-content h2 {
-        font-size: 32px;
-    }
-
-    .service {
-        grid-template-columns: 1fr;
-        padding: 40px 25px;
-    }
-
-    .footer-container {
-        grid-template-columns: 1fr;
-        gap: 35px;
-        width: 85%;
-    }
-
-}
 
 /* =========================
           SCRIPT.JS
