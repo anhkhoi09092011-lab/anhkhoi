@@ -49,3 +49,5 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("scroll", activateMenuOnScroll);
     activateMenuOnScroll(); // Gọi ngay lần đầu
 });
+
+

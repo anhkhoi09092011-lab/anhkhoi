@@ -7,24 +7,35 @@
   const PRICE_REGEX = /[\d.,]+\s*đ/;
 
   /* ---------- 1. Lấy / lưu dữ liệu giỏ hàng ---------- */
+  // Thông tin người dùng do auth-state.js / login-firebase.js ghi vào localStorage
+  function getUser() {
+    try {
+      return JSON.parse(localStorage.getItem("aka_current_user"));
+    } catch {
+      return null;
+    }
+  }
+ 
+  // Mỗi tài khoản có một giỏ hàng riêng
+  function getCartKey() {
+    const user = getUser();
+    return user ? CART_KEY + ":" + user.uid : CART_KEY;
+  }
+ 
   function getCart() {
-  // Kiểm tra nếu chưa đăng nhập thì trả về giỏ hàng rỗng
-  const currentUser = JSON.parse(localStorage.getItem("aka_current_user"));
-  if (!currentUser) {
-    return [];
+    if (!getUser()) return []; // chưa đăng nhập → giỏ rỗng
+    try {
+      return JSON.parse(localStorage.getItem(getCartKey())) || [];
+    } catch {
+      return [];
+    }
   }
-
-  try {
-    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-  } catch {
-    return [];
-  }
-}
+ 
   function saveCart(cart) {
-  localStorage.setItem(CART_KEY, JSON.stringify(cart));
-  updateBadge();
-}
-
+    localStorage.setItem(getCartKey(), JSON.stringify(cart));
+    updateBadge();
+  }
+ 
   /* ---------- 2. Tìm thông tin sản phẩm từ 1 nút "Thêm vào giỏ" ---------- */
   function getProductFromButton(btn) {
     let card = btn;
@@ -49,9 +60,7 @@
     function addToCart(product) {
 
     // Kiểm tra tài khoản đăng nhập
-  const currentUser = JSON.parse(
-    localStorage.getItem("aka_current_user")
-  );
+  const currentUser = getUser();
 
   // Chưa đăng nhập
   if (!currentUser) {
@@ -288,6 +297,12 @@ function removeItem(id) {
     }
   }
 
+  // Khi Firebase xác định xong trạng thái đăng nhập → cập nhật lại giỏ hàng
+  window.addEventListener("aka-auth-changed", () => {
+    renderCart();
+    updateBadge();
+  });
+ 
   document.addEventListener("DOMContentLoaded", () => {
     bindAddToCartButtons();
     renderCart();

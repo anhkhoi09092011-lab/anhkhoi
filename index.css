@@ -752,9 +752,7 @@ img {
         text-overflow: ellipsis;
     }
  
-    #user-greeting strong {
-        font-size: 13px;
-    }
+
  
     .navbar {
         order: 3;
@@ -795,10 +793,55 @@ img {
         font-size: 26px;
     }
 
+}
+
 /* =========================
           SCRIPT.JS
 ========================= */
-#user-greeting strong {
+#user-greeting {
     font-size: 20px;
+}
+
+#user-greeting strong {
+    font-size: inherit; /* bằng cỡ chữ "Tài khoản:" */
     font-weight: 600;
 }
+
+@media (max-width: 768px) {
+    #user-greeting {
+        font-size: 13px;
+    }
+}
+ 
+/* =========================
+   SEARCH
+========================= */
+.product-card.search-hidden,
+.products.search-hidden {
+    display: none;
+}
+ 
+.search-empty {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 20px;
+    color: #777;
+}
+ 
+.search-empty.show {
+    display: block;
+}
+ 
+ 
+/* Ẩn hoàn toàn thanh điều khiển video */
+.video-container video {
+    pointer-events: none;
+}
+ 
+.video-container video::-webkit-media-controls,
+.video-container video::-webkit-media-controls-panel,
+.video-container video::-webkit-media-controls-timeline {
+    display: none !important;
+}
+ 

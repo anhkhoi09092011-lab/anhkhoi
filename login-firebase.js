@@ -14,8 +14,18 @@ if (loginForm) {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      localStorage.setItem("aka_current_user", JSON.stringify({
+        uid: user.uid,
+        name: user.displayName || "",
+        email: user.email
+      }));
+ 
       alert("Đăng nhập thành công!");
-      window.location.href = "index.html";
+ 
+      // Quay lại trang trước đó (nếu bị chuyển sang đăng nhập khi thêm giỏ hàng)
+      const back = localStorage.getItem("redirectAfterLogin");
+      localStorage.removeItem("redirectAfterLogin");
+      window.location.href = back || "index.html";
     } catch (error) {
       console.error(error);
       alert("Email hoặc mật khẩu không chính xác!");

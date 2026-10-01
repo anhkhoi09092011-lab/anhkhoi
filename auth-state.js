@@ -5,11 +5,23 @@ import { onAuthStateChanged, signOut }
 const greetingEl = document.getElementById("user-greeting");
 
 onAuthStateChanged(auth, (user) => {
+    // Đồng bộ trạng thái đăng nhập sang localStorage để cart.js dùng
+    if (user) {
+        localStorage.setItem("aka_current_user", JSON.stringify({
+            uid: user.uid,
+            name: user.displayName || "",
+            email: user.email
+        }));
+    } else {
+        localStorage.removeItem("aka_current_user");
+    }
+    window.dispatchEvent(new Event("aka-auth-changed"));
+ 
     if (!greetingEl) return;
 
     if (user) {
         // Đã đăng nhập
-        greetingEl.innerHTML = `Xin chào, <strong>${user.displayName || user.email}</strong>`;
+        greetingEl.innerHTML = `Tài khoản: <strong>${user.displayName || user.email}</strong>`;
         greetingEl.style.cursor = "pointer";
         greetingEl.onclick = async () => {
             if (confirm("Bạn có muốn đăng xuất không?")) {
